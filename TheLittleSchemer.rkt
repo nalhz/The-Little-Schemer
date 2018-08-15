@@ -99,5 +99,20 @@
 
 
 ;P57 define function: [multiinsertL new old lat]
+[define multiinsertL
+  [lambda [new old lat]
+    [cond
+      [[null? lat] '[]]
+      [[eq? old [car lat]] [cons [cons new old] [multiinsertL new old [cdr lat]]]]
+      [else [cons [car lat] [multiinsertL new old [cdr lat]]]]]]]
+
+;P57 define function: [multisubst new old lat]
+[define multisubst
+  [lambda [new old lat]
+    [cond
+      [[null? lat] '[]]
+      [[eq? old [car lat]] [cons new [multisubst new old [cdr lat]]]]
+      [else [cons [car lat] [multisubst new old [cdr lat]]]]]]]
+
 
 
