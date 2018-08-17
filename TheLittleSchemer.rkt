@@ -209,9 +209,9 @@
 [define no-nums
   [lambda [lat]
     [cond
-     [[null? lat] '[]]
-     [[number? [car lat]] [no-nums [cdr lat]]]
-     [else [cons [car lat] [no-nums [cdr lat]]]]]]]
+      [[null? lat] '[]]
+      [[number? [car lat]] [no-nums [cdr lat]]]
+      [else [cons [car lat] [no-nums [cdr lat]]]]]]]
 
 ;P78 [all-nums lat]
 [define all-nums
@@ -248,3 +248,69 @@
     [cond
       [[one? n] [cdr lat]]
       [else [cons [car lat] [rempick2 [sub1 n][cdr lat]]]]]]]
+
+;P81 [rember* a l]
+[define rember*
+  [lambda [a l]
+    [cond
+      [[null? l] '[]]
+      [[atom? [car l]]
+       [cond
+         [[eq? [car l] a] [rember* a [cdr l]]]
+         [else [cons [car l] [rember* a [cdr l]]]]]]
+      [else [cons [rember* a [car l]] [rember* a [cdr l]]]]]]]
+
+;P82 [insertR* new old l]
+[define [insertR* new old l]
+  [cond
+    [[null? l] '[]]
+    [[atom? [car l]]
+     [cond
+       [[eq? [car l] old] [cons [cons old new] [insertR* new old [cdr l]]]]
+       [else [cons [car l] [insertR* new old [cdr l]]]]]]
+    [else
+     [cons [insertR* new old [car l]] [insertR* new old [cdr l]]]]]]
+
+
+;P84 [occur* a l]
+[define [occur* a l]
+  [cond
+    [[null? l] 0]
+    [[atom? [car l]]
+     [cond
+       [[eq? [car l] a] [add1 [occur* a [cdr l]]]]
+       [else [occur* a [cdr l]]]]]
+    [else [+ [occur* a [car l]] [occur* a [cdr l]]]]]]
+
+;P85 [subst* new old l]
+[define [subst* new old l]
+  [cond
+    [[null? l] '[]]
+    [[atom? [car l]]
+     [cond
+       [[eq? [car l] old][cons new [subst* new old [cdr l]]]]
+       [else [cons [car l] [subst* new old [cdr l]]]]]]
+    [else [cons [subst* new old [car l]] [subst* new old [cdr l]]]]]]
+
+;P86 [insert* new old l]
+[define [insertL* new old l]
+  [cond
+    [[null? l] '[]]
+    [[atom? [car l]]
+     [cond
+       [[eq? [car l] old] [cons new [cons old [insertL* new old [cdr l]]]]]
+       [else [cons [car l] [insertL* new old [cdr l]]]]]]
+    [else [cons [insertL* new old [car l]] [insertL* new old [cdr l]]]]]]
+
+    
+;P86 [member* a l]
+[define [member* a l]
+  [cond
+    [[null? l] #f]
+    [[atom? [car l]]
+     [cond
+       [[eq? [car l] a] #t]
+       [else [member* a [cdr l]]]]]
+    [else [or [member* a [car l]] [member* a [cdr l]]]]]]
+
+;P87 [leftmost
